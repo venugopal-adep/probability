@@ -169,108 +169,73 @@ with tab3:
         st.plotly_chart(fig, use_container_width=True)
 
 with tab4:
-    st.header("Test Your Probability Distribution Knowledge!")
+    st.header("Test Your Basic Probability Distribution Knowledge!")
     
     st.markdown("""
     <div class="quiz-container">
-    Let's see how well you understand probability distributions:
+    Let's see how well you understand the basics of probability distributions:
     </div>
     """, unsafe_allow_html=True)
     
     q1 = st.radio(
-        "1. Which type of probability distribution would you use to model the number of cars passing through an intersection in an hour?",
-        ["Normal Distribution", "Binomial Distribution", "Poisson Distribution", "Exponential Distribution"]
+        "1. What's the main difference between discrete and continuous probability distributions?",
+        ["Discrete distributions are always symmetric, continuous are not",
+         "Discrete distributions deal with specific, countable outcomes; continuous distributions deal with ranges of values",
+         "Discrete distributions are more common in real life",
+         "Continuous distributions always have a bell-shaped curve"]
     )
     
     if st.button("Check Answer", key="q1"):
-        if q1 == "Poisson Distribution":
+        if q1 == "Discrete distributions deal with specific, countable outcomes; continuous distributions deal with ranges of values":
             st.success("Correct! 🎉")
             st.markdown("""
             <div class="example-box">
             <h4>Explanation:</h4>
-            The Poisson distribution is ideal for modeling the number of events occurring in a fixed interval of time or space, 
-            especially when these events happen with a known average rate and independently of each other.
-
-            In this case:
-            - We're counting discrete events (cars passing)
-            - It's over a fixed time interval (one hour)
-            - Cars generally pass independently of each other
-            - There's likely an average rate of cars per hour
-
-            The Poisson distribution could tell us the probability of seeing any specific number of cars in an hour, 
-            given the average rate. This is useful for traffic management, urban planning, and even for businesses 
-            deciding when to open based on traffic patterns!
+            Discrete distributions are used for things we can count, like the number of cars in a parking lot.
+            Continuous distributions are for things we measure, like a person's exact height or weight.
             </div>
             """, unsafe_allow_html=True)
         else:
-            st.error("Not quite. Think about the characteristics of counting events over a fixed time interval.")
+            st.error("Not quite. Think about what kinds of things each type of distribution describes.")
 
     q2 = st.radio(
-        "2. What does the area under the curve of a probability density function (PDF) represent?",
-        ["The mean of the distribution", "The standard deviation of the distribution", 
-         "The total probability, which always equals 1", "The median of the distribution"]
+        "2. What does PMF stand for in probability theory?",
+        ["Possible Mean Function", "Probability Mass Function", "Partial Measurement Factor", "Primary Model Format"]
     )
 
     if st.button("Check Answer", key="q2"):
-        if q2 == "The total probability, which always equals 1":
-            st.success("Spot on! 🎉")
+        if q2 == "Probability Mass Function":
+            st.success("That's right! 🎉")
             st.markdown("""
             <div class="example-box">
             <h4>Explanation:</h4>
-            For a continuous probability distribution, the area under the curve of the probability density function (PDF) 
-            always equals 1. This is a fundamental property of PDFs.
-
-            Here's why this makes sense:
-            1. Probabilities must always be between 0 and 1.
-            2. The PDF covers all possible outcomes for the random variable.
-            3. The total probability of all possible outcomes must sum to 1 (or 100%).
-
-            Think of it like this: Imagine you're measuring people's heights. The PDF might show that some heights 
-            are more likely than others, but if you consider every possible height (from very short to very tall), 
-            the probability of someone falling somewhere on this spectrum is 100% or 1.
-
-            This property is crucial for calculations involving continuous distributions, such as finding probabilities 
-            for ranges of values (which is done by calculating the area under the curve for that range).
+            PMF stands for Probability Mass Function. It's used for discrete distributions to show the probability of each possible outcome.
+            For example, it could show the chances of rolling each number on a six-sided die.
             </div>
             """, unsafe_allow_html=True)
         else:
-            st.error("Not quite. Consider what the total probability across all possible outcomes should be.")
+            st.error("Not quite. PMF is a term specifically used for discrete probability distributions.")
 
     q3 = st.radio(
-        "3. In a normal distribution, approximately what percentage of the data falls within one standard deviation of the mean?",
-        ["50%", "68%", "95%", "99%"]
+        "3. In a probability distribution, what does the term 'mean' represent?",
+        ["The most common value in the data",
+         "The middle value of the data",
+         "The average value of the data",
+         "The largest value in the data"]
     )
 
     if st.button("Check Answer", key="q3"):
-        if q3 == "68%":
-            st.success("You've got it! 🎉")
+        if q3 == "The average value of the data":
+            st.success("Well done! 🎉")
             st.markdown("""
             <div class="example-box">
             <h4>Explanation:</h4>
-            In a normal distribution, approximately 68% of the data falls within one standard deviation of the mean. 
-            This is often called the "68-95-99.7 rule" or the "empirical rule."
-
-            Here's a breakdown:
-            - About 68% of the data falls within 1 standard deviation of the mean
-            - About 95% falls within 2 standard deviations
-            - About 99.7% falls within 3 standard deviations
-
-            This property makes the normal distribution incredibly useful in many fields:
-
-            - In quality control, it helps determine acceptable ranges for products.
-            - In psychology, it's used to standardize test scores (like IQ tests).
-            - In finance, it's used in risk assessment and portfolio management.
-
-            For example, if human height is normally distributed with a mean of 170 cm and a standard deviation of 10 cm:
-            - About 68% of people would be between 160 cm and 180 cm tall
-            - About 95% would be between 150 cm and 190 cm
-            - Almost everyone (99.7%) would be between 140 cm and 200 cm
-
-            This "clustering" around the mean is what gives the normal distribution its characteristic bell shape!
+            The mean is the average value in a distribution. It's often thought of as the "balance point" of the distribution.
+            For example, if we're talking about the heights of people in a group, the mean would be the average height.
             </div>
             """, unsafe_allow_html=True)
         else:
-            st.error("Not quite. Remember the 68-95-99.7 rule for normal distributions.")
+            st.error("Not quite. Think about what we usually mean when we talk about the 'average' of something.")
 
 # Footer
 st.markdown("---")
