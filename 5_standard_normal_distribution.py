@@ -7,6 +7,7 @@ def main():
     st.set_page_config(page_title="Standard Normal Distribution Explorer", layout="wide")
     
     st.title("🔔 Standard Normal Distribution Explorer")
+    st.write("**Developed by : Venugopal Adep**")
     
     st.markdown("""
     Welcome to the Standard Normal Distribution Explorer! This interactive tool will help you understand
