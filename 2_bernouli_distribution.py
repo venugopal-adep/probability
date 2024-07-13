@@ -91,6 +91,7 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 st.title('🎲 Bernoulli Distribution Interactive Demo')
+st.write("**Developed by : Venugopal Adep**")
 
 tabs = st.tabs(["📚 Introduction", "📊 Visualization", "🧮 Examples", "🧠 Quiz", "📈 Properties"])
 
