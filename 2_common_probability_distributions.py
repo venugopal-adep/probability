@@ -157,7 +157,7 @@ with tab4:
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #777;">
-© 2024 Common Probability Distributions Explorer | Developed by Your Name<br>
+© 2024 Common Probability Distributions Explorer | Developed by Venugopal Adep<br>
 This interactive tool is for educational purposes only and does not represent any specific research study.
 </div>
 """, unsafe_allow_html=True)
