@@ -54,6 +54,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.title("🎲 Understanding Random Variables 📊")
+st.write("**Developed by : Venugopal Adep**")
 
 tab1, tab2, tab3, tab4 = st.tabs(["📚 Introduction", "🎲 Discrete Random Variables", "📈 Continuous Random Variables", "🧠 Quiz"])
 
