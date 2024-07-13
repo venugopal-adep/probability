@@ -40,6 +40,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("📊 Properties of Sampling Distribution of the Mean")
+st.write("**Developed by : Venugopal Adep**")
 st.markdown("""
 This interactive demo explores the key properties of the sampling distribution of the mean, 
 including its relationship to the population parameters and the Central Limit Theorem.
