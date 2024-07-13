@@ -39,6 +39,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("📊 Understanding Sampling and Population Inference")
+st.write("**Developed by : Venugopal Adep**")
 st.markdown("""
 This interactive demo explores the fundamental concepts of sampling and making inferences about a population.
 Navigate through the tabs below to learn about different aspects of sampling and statistical inference.
