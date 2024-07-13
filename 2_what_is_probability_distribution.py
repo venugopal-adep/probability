@@ -37,7 +37,7 @@ tab1, tab2, tab3, tab4 = st.tabs(["📚 Concept", "🎲 Discrete Distributions",
 
 with tab1:
     st.header("Understanding Probability Distributions")
-    
+    st.write("**Developed by : Venugopal Adep**")
     st.markdown("""
     <div class="info-box">
     <h3>🎯 What is a Probability Distribution?</h3>
@@ -150,7 +150,9 @@ with tab3:
         std = st.slider("Standard Deviation (σ)", min_value=0.1, max_value=3.0, value=1.0, step=0.1)
         
     with col2:
-        x = np.linspace(mean - 4*std, mean + 4*std, 1000)
+        # Set fixed x-axis range
+        x_min, x_max = -10, 10
+        x = np.linspace(x_min, x_max, 1000)
         pdf = stats.norm.pdf(x, mean, std)
         
         fig = go.Figure()
@@ -160,26 +162,11 @@ with tab3:
             title=f"Normal Distribution (μ={mean}, σ={std})",
             xaxis_title="Value",
             yaxis_title="Probability Density",
-            showlegend=False
+            showlegend=False,
+            xaxis_range=[x_min, x_max]  # Set fixed x-axis range
         )
         
         st.plotly_chart(fig, use_container_width=True)
-        
-    st.markdown("""
-    <div class="example-box">
-    <h4>Understanding the Normal Distribution</h4>
-    - The bell-shaped curve shows the relative likelihood of different values.
-    - The highest point is at the mean (μ), which is the most likely value.
-    - About 68% of the data falls within one standard deviation (σ) of the mean.
-    
-    <b>Example:</b> If human height follows a normal distribution with μ=170 cm and σ=10 cm:
-    - The peak of the curve would be at 170 cm (most common height).
-    - About 68% of people would be between 160 cm and 180 cm tall.
-    - Heights far from 170 cm (e.g., 140 cm or 200 cm) would be less likely.
-    
-    Adjust μ and σ to see how the shape and position of the curve change!
-    </div>
-    """, unsafe_allow_html=True)
 
 with tab4:
     st.header("Test Your Probability Distribution Knowledge!")
@@ -289,7 +276,7 @@ with tab4:
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #777;">
-© 2024 Probability Distribution Explorer | Developed by Your Name<br>
+© 2024 Probability Distribution Explorer | Developed by Venugopal<br>
 This interactive tool is for educational purposes only and does not represent any specific research study.
 </div>
 """, unsafe_allow_html=True)
