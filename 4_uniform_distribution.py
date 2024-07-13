@@ -95,6 +95,7 @@ def main():
     st.set_page_config(page_title="Uniform Distribution Explorer", layout="wide")
     
     st.title("🎲 Understanding Uniform Distribution")
+    st.write("**Developed by : Venugopal Adep**")
     st.markdown("---")
     
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introduction", "Interactive Simulation", "Visualization", "Solved Numerical", "Quiz"])
