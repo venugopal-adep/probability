@@ -39,6 +39,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("📊 Sampling Distribution")
+st.write("**Developed by : Venugopal Adep**")
 st.markdown("""
 This interactive demo explores the concept of sampling distribution, particularly the sampling distribution of the mean.
 """)
