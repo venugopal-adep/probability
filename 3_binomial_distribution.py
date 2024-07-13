@@ -39,6 +39,7 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 st.title('📊 Binomial Distribution Interactive Demo')
+st.write("**Developed by : Venugopal Adep**")
 
 tab1, tab2, tab3 = st.tabs(["📚 Introduction", "🎲 Interactive Example", "🧠 Quiz"])
 
