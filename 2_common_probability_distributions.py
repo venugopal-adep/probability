@@ -29,7 +29,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("📊 Common Probability Distributions Explorer")
-st.write("**Developed by: Your Name**")
+st.write("**Developed by: Venugopal Adep**")
 st.markdown("Explore common probability distributions and their real-world applications.")
 
 # Create tabs for each distribution
