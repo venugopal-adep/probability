@@ -9,6 +9,7 @@ def normal_pdf(x, mu, sigma):
 st.set_page_config(layout="wide", page_title="Normal Distribution Explorer", page_icon="🔔")
 
 st.title("🔔 Normal Distribution Interactive Explorer")
+st.write("**Developed by : Venugopal Adep**")
 
 tab1, tab2, tab3, tab4 = st.tabs(["📊 Interactive Plot", "🧮 Solved Examples", "🧠 Quiz", "📚 Learn More"])
 
