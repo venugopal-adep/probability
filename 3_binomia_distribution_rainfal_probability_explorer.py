@@ -6,6 +6,7 @@ import plotly.express as px
 
 def main():
     st.set_page_config(page_title="Rainfall Explorer", page_icon="🌧️", layout="wide")
+    st.write("**Developed by : Venugopal Adep**")
     
     # Custom CSS for better styling
     st.markdown("""
