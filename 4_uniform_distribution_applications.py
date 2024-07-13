@@ -6,6 +6,7 @@ import random
 def set_page_config():
     st.set_page_config(page_title="Uniform Distribution in Real Life", layout="wide")
     st.title("🌟 Uniform Distribution: Real-Life Applications")
+    st.write("**Developed by : Venugopal Adep**")
     st.markdown("""
     <style>
     .stApp {
