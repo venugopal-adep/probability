@@ -7,6 +7,7 @@ def main():
     st.set_page_config(page_title="Normal Distribution Area Explorer", layout="wide")
     
     st.title("🔔 Normal Distribution: Area Under the Curve")
+    st.write("**Developed by : Venugopal Adep**")
     
     st.markdown("""
     Welcome to the Normal Distribution Area Explorer! This interactive tool will help you understand
