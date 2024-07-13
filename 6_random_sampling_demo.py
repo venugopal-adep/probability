@@ -39,6 +39,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("🎲 Simple Random Sampling")
+st.write("**Developed by : Venugopal Adep**")
 st.markdown("""
 This interactive demo explores the concept of Simple Random Sampling and its importance in statistical analysis.
 """)
