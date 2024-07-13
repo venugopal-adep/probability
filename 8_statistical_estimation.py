@@ -50,6 +50,7 @@ st.markdown("""
 
 # Main title with emoji
 st.title("📊 Statistical Estimation Explorer")
+st.write("**Developed by : Venugopal Adep**")
 
 # Introduction
 st.markdown("""
