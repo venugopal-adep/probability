@@ -40,6 +40,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("🔔 Central Limit Theorem Demonstration")
+st.write("**Developed by : Venugopal Adep**")
 st.markdown("""
 This interactive demo explores the Central Limit Theorem and its assumptions. 
 It shows how the sampling distribution of the sample means approaches a normal distribution 
