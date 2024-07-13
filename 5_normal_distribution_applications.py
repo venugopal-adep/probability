@@ -40,6 +40,7 @@ st.markdown("""
 
 # Title and introduction
 st.title("📊 Normal Distribution in Real Life")
+st.write("**Developed by : Venugopal Adep**")
 st.write("""
 The normal distribution, also known as the Gaussian distribution, is a fundamental concept in statistics and probability theory. 
 It's characterized by its distinctive "bell curve" shape and is defined by two parameters: the mean (μ) and the standard deviation (σ).
