@@ -41,6 +41,7 @@ def binomial_cdf(n, p, k):
     return binom.cdf(k, n, p)
 
 st.title("📊 Binomial Distribution Interactive Demo")
+st.write("**Developed by : Venugopal Adep**")
 
 with st.expander("ℹ️ What is a Binomial Distribution?"):
     st.write("""
