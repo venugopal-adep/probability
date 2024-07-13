@@ -8,6 +8,7 @@ from math import comb
 st.set_page_config(layout="wide", page_title="Probability Distributions Explorer")
 
 st.title("🎲 Exploring Common Probability Distributions")
+st.write("**Developed by : Venugopal Adep**")
 
 st.markdown("""
 <style>
