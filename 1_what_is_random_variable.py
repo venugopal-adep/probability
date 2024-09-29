@@ -3,7 +3,7 @@ import plotly.graph_objs as go
 import numpy as np
 from scipy import stats
 
-st.set_page_config(layout="wide", page_title="Interactive Probability Distributions")
+st.set_page_config(layout="wide", page_title="Understanding Random Variables")
 
 # Custom CSS for better visual appeal
 st.markdown("""
@@ -18,113 +18,83 @@ st.markdown("""
         background-color: #1E90FF;
         color: white;
     }
+    .info-box {
+        background-color: #f0f8ff;
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("📊 Interactive Probability Distributions")
+st.title("Understanding Random Variables")
 
-tab1, tab2 = st.tabs(["🪙 Coin Toss", "🎲 Dice Roll"])
+st.markdown("""
+<div class="info-box">
+<h2>What is a Random Variable?</h2>
+<p>A random variable is a function that assigns a numerical value to each outcome of an experiment. It assumes different values with different probabilities. It is usually denoted by a capital letter X and the probability associated with any particular value of X is denoted by P(X=x).</p>
+</div>
+""", unsafe_allow_html=True)
 
-with tab1:
-    st.header("🪙 Interactive Example: Coin Toss")
-    
-    col1, col2 = st.columns([1, 2])
-    
-    with col1:
-        st.write("Let's toss coins and count the number of heads!")
-        num_coins = st.slider("Number of coins to toss", 1, 10, 2)
-        num_tosses = st.number_input("Number of experiments", min_value=100, max_value=10000, value=1000, step=100)
-        
-        if st.button(f"🪙 Toss {num_coins} Coins {num_tosses} Times"):
-            results = np.random.binomial(num_coins, 0.5, num_tosses)
-            unique, counts = np.unique(results, return_counts=True)
-            experimental_probs = counts / num_tosses
-            
-            theoretical_probs = [stats.binom.pmf(k, num_coins, 0.5) for k in range(num_coins + 1)]
-            
-            fig = go.Figure()
-            fig.add_trace(go.Bar(x=list(range(num_coins + 1)), y=experimental_probs, name="Experimental", marker_color='blue'))
-            fig.add_trace(go.Scatter(x=list(range(num_coins + 1)), y=theoretical_probs, mode='lines+markers', name="Theoretical", line=dict(color='red')))
-            
-            fig.update_layout(
-                title=f"Probability Distribution of {num_coins} Coin Tosses ({num_tosses} experiments)",
-                xaxis_title="Number of Heads",
-                yaxis_title="Probability",
-                legend_title="Distribution Type"
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
-            
-            st.write("Hover over the bars and lines to see exact probabilities!")
-    
-    with col2:
-        st.write("Theoretical Probability Distribution:")
-        x = list(range(num_coins + 1))
-        y = [stats.binom.pmf(k, num_coins, 0.5) for k in x]
-        
-        fig = go.Figure(go.Bar(x=x, y=y, marker_color='green'))
-        fig.update_layout(
-            title=f"Theoretical Probability Distribution for {num_coins} Coin Tosses",
-            xaxis_title="Number of Heads",
-            yaxis_title="Probability"
-        )
-        st.plotly_chart(fig, use_container_width=True)
+# Example of coin toss
+st.subheader("Example: Coin Toss")
+st.write("""
+Suppose that a fair coin is tossed twice and the possible outcomes are {HH, HT, TH, TT}. Let X be the random variable representing the number of heads that can come up. So, X can take values from the set {2, 1, 0}.
+The probability of two heads coming up is P(X=2) = 1/4.
+""")
 
-with tab2:
-    st.header("🎲 Interactive Example: Rolling Dice")
+# Visualization of Random Variable types
+st.subheader("Types of Random Variables")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.info("**Discrete random variable:** It can take only a finite number of values.\n\nFor example: Number of employees getting promoted in an organization.")
     
-    col1, col2 = st.columns([1, 2])
+    # Interactive example for discrete random variable
+    st.subheader("Interactive Example: Employee Promotions")
+    num_employees = st.slider("Total number of employees", 10, 100, 50)
+    promotion_rate = st.slider("Promotion rate (%)", 0, 100, 10) / 100
     
-    with col1:
-        st.write("Adjust the number of dice and roll them!")
-        num_dice = st.slider("Number of dice to roll", 1, 10, 3)
-        num_rolls = st.number_input("Number of rolls", min_value=100, max_value=10000, value=1000, step=100)
+    if st.button("Simulate Promotions"):
+        promotions = np.random.binomial(num_employees, promotion_rate)
+        st.success(f"Number of employees promoted: {promotions}")
         
-        if st.button(f"🎲 Roll {num_dice} Dice {num_rolls} Times"):
-            results = np.sum(np.random.randint(1, 7, size=(num_rolls, num_dice)), axis=1)
-            unique, counts = np.unique(results, return_counts=True)
-            experimental_probs = counts / num_rolls
-            
-            # Calculate theoretical probabilities
-            possible_sums = range(num_dice, 6*num_dice + 1)
-            theoretical_probs = [sum(1 for dice in np.array(np.meshgrid(*([range(1, 7)] * num_dice))).T.reshape(-1, num_dice)
-                                     if sum(dice) == s) / (6**num_dice) for s in possible_sums]
-            
-            fig = go.Figure()
-            fig.add_trace(go.Bar(x=unique, y=experimental_probs, name="Experimental", marker_color='blue'))
-            fig.add_trace(go.Scatter(x=list(possible_sums), y=theoretical_probs, mode='lines+markers', name="Theoretical", line=dict(color='red')))
-            
-            fig.update_layout(
-                title=f"Probability Distribution for Sum of {num_dice} Dice ({num_rolls} rolls)",
-                xaxis_title="Sum of Dice",
-                yaxis_title="Probability",
-                legend_title="Distribution Type"
-            )
-            
-            st.plotly_chart(fig, use_container_width=True)
-            
-            st.write("Hover over the bars and lines to see exact probabilities!")
+        # Plot probability distribution
+        x = range(num_employees + 1)
+        y = [stats.binom.pmf(k, num_employees, promotion_rate) for k in x]
+        fig = go.Figure(go.Bar(x=x, y=y))
+        fig.update_layout(title="Probability Distribution of Promotions",
+                          xaxis_title="Number of Promotions",
+                          yaxis_title="Probability")
+        st.plotly_chart(fig)
+
+with col2:
+    st.info("**Continuous random variable:** It can take uncountable number of values in a given range.\n\nFor example: Speed of an aircraft.")
     
-    with col2:
-        st.write("Theoretical Probability Distribution:")
-        possible_sums = range(num_dice, 6*num_dice + 1)
-        theoretical_probs = [sum(1 for dice in np.array(np.meshgrid(*([range(1, 7)] * num_dice))).T.reshape(-1, num_dice)
-                                 if sum(dice) == s) / (6**num_dice) for s in possible_sums]
+    # Interactive example for continuous random variable
+    st.subheader("Interactive Example: Aircraft Speed")
+    mean_speed = st.slider("Average speed (km/h)", 500, 1000, 800)
+    std_dev = st.slider("Standard deviation of speed", 10, 100, 50)
+    
+    if st.button("Simulate Aircraft Speeds"):
+        speeds = np.random.normal(mean_speed, std_dev, 1000)
         
-        fig = go.Figure(go.Bar(x=list(possible_sums), y=theoretical_probs, marker_color='green'))
-        fig.update_layout(
-            title=f"Theoretical Probability Distribution for Sum of {num_dice} Dice",
-            xaxis_title="Sum of Dice",
-            yaxis_title="Probability"
-        )
-        st.plotly_chart(fig, use_container_width=True)
+        fig = go.Figure()
+        fig.add_trace(go.Histogram(x=speeds, nbinsx=30, name="Simulated Speeds"))
+        fig.add_trace(go.Scatter(x=np.linspace(mean_speed-3*std_dev, mean_speed+3*std_dev, 100),
+                                 y=stats.norm.pdf(np.linspace(mean_speed-3*std_dev, mean_speed+3*std_dev, 100), mean_speed, std_dev) * len(speeds) * (speeds.max()-speeds.min())/30,
+                                 mode="lines", name="Theoretical Distribution"))
+        fig.update_layout(title="Distribution of Aircraft Speeds",
+                          xaxis_title="Speed (km/h)",
+                          yaxis_title="Frequency")
+        st.plotly_chart(fig)
 
 st.sidebar.title("📚 Learning Guide")
 st.sidebar.info("""
-1. Start with the Coin Toss example to understand basic probability concepts.
-2. Experiment with different numbers of coins and tosses to see how it affects the distribution.
-3. Move on to the Dice Roll example for a more complex probability scenario.
-4. Compare the experimental results with theoretical probabilities in both cases.
-5. Observe how the distributions change as you increase the number of experiments.
+1. Start by understanding the definition of a random variable.
+2. Explore the difference between discrete and continuous random variables.
+3. Experiment with the interactive examples to see how different parameters affect the distributions.
+4. Observe how the probability distributions change for different scenarios.
+5. Try to identify real-world situations where you might encounter discrete or continuous random variables.
 """)
-st.sidebar.success("Happy exploring! 🚀")
+st.sidebar.success("Happy learning! 🚀")
