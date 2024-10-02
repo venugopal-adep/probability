@@ -24,6 +24,7 @@ st.markdown("""
     .stButton>button:hover {background-color: #3a7be0;}
     h1, h2, h3 {color: #2c3e50;}
     .stSlider {margin-bottom: 20px;}
+    .formula-box {background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; border-left: 3px solid #17a2b8; font-family: "Consolas", monospace; font-size: 0.9em; line-height: 1.2;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -43,14 +44,26 @@ with tab1:
     **Example: The outcome of tossing a fair coin**
     """)
     
-    p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.5, 0.01, key="bernoulli_p")
+    col1, col2 = st.columns([3, 7])
     
-    x = [0, 1]
-    y = [1-p, p]
+    with col1:
+        p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.5, 0.01, key="bernoulli_p")
+        
+        st.markdown("""
+        <div class="formula-box">
+        <strong>Formula:</strong><br>
+        P(X=k) = p^k * (1-p)^(1-k)<br>
+        where k ∈ {0, 1}
+        </div>
+        """, unsafe_allow_html=True)
     
-    fig = go.Figure(data=[go.Bar(x=x, y=y, text=[f'{y[0]:.2f}', f'{y[1]:.2f}'], textposition='auto')])
-    fig.update_layout(title="Bernoulli Distribution", xaxis_title="Outcome (0: Failure, 1: Success)", yaxis_title="Probability")
-    st.plotly_chart(fig, use_container_width=True)
+    with col2:
+        x = [0, 1]
+        y = [1-p, p]
+        
+        fig = go.Figure(data=[go.Bar(x=x, y=y, text=[f'{y[0]:.2f}', f'{y[1]:.2f}'], textposition='auto')])
+        fig.update_layout(title="Bernoulli Distribution", xaxis_title="Outcome (0: Failure, 1: Success)", yaxis_title="Probability")
+        st.plotly_chart(fig, use_container_width=True)
     
     st.markdown("""
     <div class="example-box">
@@ -71,16 +84,28 @@ with tab2:
     **Example: The number of non-defective products in a production run**
     """)
     
-    n = st.slider("Number of Trials (n)", 1, 100, 20, 1, key="binomial_n")
-    p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.8, 0.01, key="binomial_p")
+    col1, col2 = st.columns([3, 7])
     
-    x = np.arange(0, n+1)
-    y = stats.binom.pmf(x, n, p)
+    with col1:
+        n = st.slider("Number of Trials (n)", 1, 100, 20, 1, key="binomial_n")
+        p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.8, 0.01, key="binomial_p")
+        
+        st.markdown("""
+        <div class="formula-box">
+        <strong>Formula:</strong><br>
+        P(X=k) = C(n,k) * p^k * (1-p)^(n-k)<br>
+        where k = 0, 1, ..., n
+        </div>
+        """, unsafe_allow_html=True)
     
-    fig = go.Figure(data=[go.Bar(x=x, y=y)])
-    fig.update_layout(title=f"Binomial Distribution (n={n}, p={p})", 
-                      xaxis_title="Number of Successes", yaxis_title="Probability")
-    st.plotly_chart(fig, use_container_width=True)
+    with col2:
+        x = np.arange(0, n+1)
+        y = stats.binom.pmf(x, n, p)
+        
+        fig = go.Figure(data=[go.Bar(x=x, y=y)])
+        fig.update_layout(title=f"Binomial Distribution (n={n}, p={p})", 
+                          xaxis_title="Number of Successes", yaxis_title="Probability")
+        st.plotly_chart(fig, use_container_width=True)
     
     st.markdown("""
     <div class="example-box">
@@ -101,16 +126,28 @@ with tab3:
     **Example: The number of books sold weekly at a bookstore**
     """)
     
-    a = st.slider("Minimum Value (a)", 0, 50, 10, 1, key="uniform_a")
-    b = st.slider("Maximum Value (b)", a+1, 100, 50, 1, key="uniform_b")
+    col1, col2 = st.columns([3, 7])
     
-    x = np.linspace(a-5, b+5, 1000)
-    y = np.where((x >= a) & (x <= b), 1/(b-a), 0)
+    with col1:
+        a = st.slider("Minimum Value (a)", 0, 50, 10, 1, key="uniform_a")
+        b = st.slider("Maximum Value (b)", a+1, 100, 50, 1, key="uniform_b")
+        
+        st.markdown("""
+        <div class="formula-box">
+        <strong>Formula:</strong><br>
+        f(x) = 1 / (b - a)<br>
+        for a ≤ x ≤ b
+        </div>
+        """, unsafe_allow_html=True)
     
-    fig = go.Figure(data=[go.Scatter(x=x, y=y, mode='lines', fill='tozeroy')])
-    fig.update_layout(title=f"Uniform Distribution [a={a}, b={b}]", 
-                      xaxis_title="Number of Books Sold", yaxis_title="Probability Density")
-    st.plotly_chart(fig, use_container_width=True)
+    with col2:
+        x = np.linspace(a-5, b+5, 1000)
+        y = np.where((x >= a) & (x <= b), 1/(b-a), 0)
+        
+        fig = go.Figure(data=[go.Scatter(x=x, y=y, mode='lines', fill='tozeroy')])
+        fig.update_layout(title=f"Uniform Distribution [a={a}, b={b}]", 
+                          xaxis_title="Number of Books Sold", yaxis_title="Probability Density")
+        st.plotly_chart(fig, use_container_width=True)
     
     st.markdown("""
     <div class="example-box">
@@ -131,16 +168,29 @@ with tab4:
     **Example: IQ distribution of all seven-year-old children in New York**
     """)
     
-    mu = st.slider("Mean (μ)", 70, 130, 100, 1, key="normal_mu")
-    sigma = st.slider("Standard Deviation (σ)", 1, 30, 15, 1, key="normal_sigma")
+    col1, col2 = st.columns([3, 7])
     
-    x = np.linspace(mu - 4*sigma, mu + 4*sigma, 1000)
-    y = stats.norm.pdf(x, mu, sigma)
+    with col1:
+        mu = st.slider("Mean (μ)", 70, 130, 100, 1, key="normal_mu")
+        sigma = st.slider("Standard Deviation (σ)", 1, 30, 15, 1, key="normal_sigma")
+        
+        st.markdown("""
+        <div class="formula-box">
+        <strong>Formula:</strong><br>
+        f(x) = (1/(σ√(2π))) * e^(-(x-μ)²/(2σ²))
+        </div>
+        """, unsafe_allow_html=True)
     
-    fig = go.Figure(data=[go.Scatter(x=x, y=y, mode='lines', fill='tozeroy')])
-    fig.update_layout(title=f"Normal Distribution (μ={mu}, σ={sigma})", 
-                      xaxis_title="IQ Score", yaxis_title="Probability Density")
-    st.plotly_chart(fig, use_container_width=True)
+    with col2:
+        x = np.linspace(40, 160, 1000)  # Fixed x-axis range
+        y = stats.norm.pdf(x, mu, sigma)
+        
+        fig = go.Figure(data=[go.Scatter(x=x, y=y, mode='lines', fill='tozeroy')])
+        fig.update_layout(title=f"Normal Distribution (μ={mu}, σ={sigma})", 
+                          xaxis_title="IQ Score", yaxis_title="Probability Density",
+                          xaxis_range=[40, 160],  # Fixed x-axis range
+                          yaxis_range=[0, 0.03])  # Fixed y-axis range
+        st.plotly_chart(fig, use_container_width=True)
     
     st.markdown("""
     <div class="example-box">
