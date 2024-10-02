@@ -32,7 +32,7 @@ st.markdown("""
         color: white;
     }
     .stMarkdown {
-        text-align: justify;
+        text-align: left;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -48,27 +48,36 @@ This interactive demo explores the concept of sampling distribution, particularl
 tab1, tab2, tab3 = st.tabs(["📚 Concept", "🔍 Interactive Demo", "🧠 Quiz"])
 
 with tab1:
-    st.header("What is Sampling Distribution?")
+    st.header("Sampling Distributions")
     
-    st.info("""
-    The sampling distribution of a statistic is the probability distribution of that statistic when we draw many samples from a population.
+    st.subheader("What is the need for sampling?")
+    
+    st.write("""
+    Given the limited resources and time, it is not always possible to study the population. That's why we choose a
+    sample out of the population to make inferences about the population.
     """)
     
-    st.markdown("""
-    ### Key Points:
-    1. Sampling distributions can be created for various statistics (e.g., mean, variance, proportion).
-    2. The sampling distribution of the mean tends to be normally distributed (Central Limit Theorem).
-    3. The spread of the sampling distribution decreases as sample size increases.
-    4. Statistical inference techniques are largely based on sampling distributions.
-
-    ### Why is it important?
-    - Helps us understand the variability of sample statistics.
-    - Forms the basis for inferential statistics and hypothesis testing.
-    - Allows us to make probabilistic statements about population parameters.
+    st.write("""
+    Example: Suppose a new drug is manufactured and it needs is to be tested for the adverse side effects on a
+    country's population. It is almost impossible to conduct a research study that involves everyone.
+    """)
+    
+    st.subheader("What are Sampling Distributions?")
+    
+    st.write("""
+    It is a distribution of a particular sample statistic obtained from all possible samples drawn from a specific
+    population.
     """)
 
 with tab2:
     st.header("Interactive Sampling Distribution Demo")
+    
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        # User inputs
+        sample_size = st.slider("Select sample size:", min_value=10, max_value=1000, value=30, step=10)
+        num_samples = st.slider("Number of samples to draw:", min_value=100, max_value=10000, value=1000, step=100)
     
     # Create a bimodal population
     np.random.seed(42)
@@ -82,30 +91,27 @@ with tab2:
     def sample_means(population, sample_size, num_samples):
         return [np.mean(np.random.choice(population, size=sample_size, replace=True)) for _ in range(num_samples)]
     
-    # User inputs
-    sample_size = st.slider("Select sample size:", min_value=10, max_value=1000, value=30, step=10)
-    num_samples = st.slider("Number of samples to draw:", min_value=100, max_value=10000, value=1000, step=100)
-    
     # Calculate sample means
     means = sample_means(population, sample_size, num_samples)
     
-    # Create subplots
-    fig = make_subplots(rows=1, cols=2, subplot_titles=("Population Distribution", "Sampling Distribution of Means"))
-    
-    # Population distribution
-    fig.add_trace(go.Histogram(x=population, name="Population", marker_color='lightblue'), row=1, col=1)
-    
-    # Sampling distribution of means
-    fig.add_trace(go.Histogram(x=means, name="Sample Means", marker_color='lightgreen'), row=1, col=2)
-    
-    # Update layout
-    fig.update_layout(height=500, showlegend=False)
-    fig.update_xaxes(title_text="Value", row=1, col=1)
-    fig.update_xaxes(title_text="Sample Mean", row=1, col=2)
-    fig.update_yaxes(title_text="Frequency", row=1, col=1)
-    fig.update_yaxes(title_text="Frequency", row=1, col=2)
-    
-    st.plotly_chart(fig, use_container_width=True)
+    with col2:
+        # Create subplots
+        fig = make_subplots(rows=1, cols=2, subplot_titles=("Population Distribution", "Sampling Distribution of Means"))
+        
+        # Population distribution
+        fig.add_trace(go.Histogram(x=population, name="Population", marker_color='lightblue'), row=1, col=1)
+        
+        # Sampling distribution of means
+        fig.add_trace(go.Histogram(x=means, name="Sample Means", marker_color='lightgreen'), row=1, col=2)
+        
+        # Update layout
+        fig.update_layout(height=500, showlegend=False)
+        fig.update_xaxes(title_text="Value", row=1, col=1)
+        fig.update_xaxes(title_text="Sample Mean", row=1, col=2, range=[4, 9])  # Fixed x-axis range for sampling distribution
+        fig.update_yaxes(title_text="Frequency", row=1, col=1)
+        fig.update_yaxes(title_text="Frequency", row=1, col=2)
+        
+        st.plotly_chart(fig, use_container_width=True)
     
     # Statistics
     col1, col2 = st.columns(2)
@@ -162,12 +168,3 @@ with tab3:
             else:
                 st.error("Incorrect. " + q["explanation"])
 
-st.markdown("""
----
-### Key Takeaways:
-1. The sampling distribution shows how a statistic varies across many samples.
-2. For means, the sampling distribution tends to be normal, even if the population isn't (Central Limit Theorem).
-3. The spread of the sampling distribution decreases as sample size increases.
-4. Understanding sampling distributions is crucial for statistical inference and hypothesis testing.
-5. The mean of the sampling distribution is an unbiased estimator of the population mean.
-""")
