@@ -67,55 +67,57 @@ with tab1:
 with tab2:
     st.subheader('Interactive Binomial Distribution Example')
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 2])  # Adjust the ratio to give more space to the plot
+    
     with col1:
+        st.markdown("### Input Parameters")
         n = st.slider('Number of lottery tickets (n)', 1, 20, 10)
         p = st.slider('Probability of winning a single ticket (p)', 0.0, 1.0, 0.1, 0.01)
-    with col2:
         x = st.slider('Number of winning tickets (x)', 0, n, 6)
 
-    # Calculate probability
-    prob = binom.pmf(x, n, p)
+        # Calculate probability
+        prob = binom.pmf(x, n, p)
 
-    st.markdown(f"""
-    <div class="info-box">
-    Probability of winning exactly {x} out of {n} lottery tickets, 
-    with a {p:.2%} chance of winning each ticket:
-    <br><br>
-    <b>P(X = {x}) = {prob:.6f}</b>
-    </div>
-    """, unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="info-box">
+        Probability of winning exactly {x} out of {n} lottery tickets, 
+        with a {p:.2%} chance of winning each ticket:
+        <br><br>
+        <b>P(X = {x}) = {prob:.6f}</b>
+        </div>
+        """, unsafe_allow_html=True)
 
-    # Plot Binomial Distribution
-    fig = go.Figure()
+    with col2:
+        # Plot Binomial Distribution
+        fig = go.Figure()
 
-    x_range = np.arange(n + 1)
-    y = binom.pmf(x_range, n, p)
+        x_range = np.arange(n + 1)
+        y = binom.pmf(x_range, n, p)
 
-    fig.add_trace(go.Bar(
-        x=x_range, 
-        y=y,
-        name='Probability',
-        marker_color='lightblue'
-    ))
+        fig.add_trace(go.Bar(
+            x=x_range, 
+            y=y,
+            name='Probability',
+            marker_color='lightblue'
+        ))
 
-    fig.add_trace(go.Scatter(
-        x=[x, x],
-        y=[0, binom.pmf(x, n, p)],
-        mode='lines',
-        name='Selected X',
-        line=dict(color='red', width=2, dash='dash')
-    ))
+        fig.add_trace(go.Scatter(
+            x=[x, x],
+            y=[0, binom.pmf(x, n, p)],
+            mode='lines',
+            name='Selected X',
+            line=dict(color='red', width=2, dash='dash')
+        ))
 
-    fig.update_layout(
-        title=f'Binomial Distribution (n={n}, p={p:.2f})',
-        xaxis_title='Number of Successes (X)',
-        yaxis_title='Probability',
-        showlegend=True,
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-    )
+        fig.update_layout(
+            title=f'Binomial Distribution (n={n}, p={p:.2f})',
+            xaxis_title='Number of Successes (X)',
+            yaxis_title='Probability',
+            showlegend=True,
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        )
 
-    st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True)
 
     # Formula
     st.subheader('Binomial Distribution Formula')
