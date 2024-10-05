@@ -60,7 +60,7 @@ with col1:
         st.success(f"Number of employees promoted: {promotions}")
         
         # Plot probability distribution
-        x = range(num_employees + 1)
+        x = list(range(num_employees + 1))  # Convert range to list
         y = [stats.binom.pmf(k, num_employees, promotion_rate) for k in x]
         fig = go.Figure(go.Bar(x=x, y=y))
         fig.update_layout(title="Probability Distribution of Promotions",
