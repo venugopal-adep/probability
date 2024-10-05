@@ -5,7 +5,7 @@ from scipy import stats
 
 st.set_page_config(layout="wide", page_title="Understanding Random Variables")
 
-# Custom CSS for better visual appeal
+# Custom CSS (unchanged)
 st.markdown("""
 <style>
     .main {
@@ -43,12 +43,20 @@ Suppose that a fair coin is tossed twice and the possible outcomes are {HH, HT, 
 The probability of two heads coming up is P(X=2) = 1/4.
 """)
 
+# Additional examples
+st.subheader("More Examples of Random Variables")
+st.write("""
+1. Rolling a die: X = {1, 2, 3, 4, 5, 6}
+2. Picking a card from a deck: X could represent the value of the card
+3. Flipping a coin: X = {H, T}
+""")
+
 # Visualization of Random Variable types
 st.subheader("Types of Random Variables")
 col1, col2 = st.columns(2)
 
 with col1:
-    st.info("**Discrete random variable:** It can take only a finite number of values.\n\nFor example: Number of employees getting promoted in an organization.")
+    st.info("**Discrete random variable:** It can take only a finite number of values (countable, finite, specific value).\n\nFor example: Number of employees getting promoted in an organization.")
     
     # Interactive example for discrete random variable
     st.subheader("Interactive Example: Employee Promotions")
@@ -60,7 +68,7 @@ with col1:
         st.success(f"Number of employees promoted: {promotions}")
         
         # Plot probability distribution
-        x = list(range(num_employees + 1))  # Convert to list
+        x = range(num_employees + 1)
         y = [stats.binom.pmf(k, num_employees, promotion_rate) for k in x]
         fig = go.Figure(go.Bar(x=x, y=y))
         fig.update_layout(title="Probability Distribution of Promotions",
@@ -69,7 +77,7 @@ with col1:
         st.plotly_chart(fig)
 
 with col2:
-    st.info("**Continuous random variable:** It can take uncountable number of values in a given range.\n\nFor example: Speed of an aircraft.")
+    st.info("**Continuous random variable:** It can take uncountable number of values in a given range (uncountable, infinite, range).\n\nFor example: Speed of an aircraft.")
     
     # Interactive example for continuous random variable
     st.subheader("Interactive Example: Aircraft Speed")
@@ -89,12 +97,21 @@ with col2:
                           yaxis_title="Frequency")
         st.plotly_chart(fig)
 
+# Additional explanation on the rule and experiment
+st.subheader("Understanding the Rule and Experiment")
+st.write("""
+In the context of random variables:
+- The **experiment** is the process that generates the outcomes. For example, tossing a coin twice or rolling a die.
+- The **rule** is the function that assigns numerical values to the outcomes. For example, counting the number of heads in coin tosses or the value shown on a die.
+""")
+
 st.sidebar.title("📚 Learning Guide")
 st.sidebar.info("""
 1. Start by understanding the definition of a random variable.
 2. Explore the difference between discrete and continuous random variables.
-3. Experiment with the interactive examples to see how different parameters affect the distributions.
-4. Observe how the probability distributions change for different scenarios.
-5. Try to identify real-world situations where you might encounter discrete or continuous random variables.
+3. Understand the concepts of "rule" and "experiment" in the context of random variables.
+4. Experiment with the interactive examples to see how different parameters affect the distributions.
+5. Observe how the probability distributions change for different scenarios.
+6. Try to identify real-world situations where you might encounter discrete or continuous random variables.
 """)
 st.sidebar.success("Happy learning! 🚀")
