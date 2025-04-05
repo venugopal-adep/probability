@@ -36,14 +36,14 @@ fig.add_trace(go.Bar(
     y=pmf,
     name='Probability',
     marker_color=['red' if (k <= critical_low or k >= critical_high) else 'blue' for k in x],
-    customdata=p_values,  # Add the p-values as custom data
+    customdata=[[p] for p in p_values],  # Format as 2D array for Plotly
     hovertemplate=(
-        "<b>Number of Heads</b>: %{x}\n" +
-        "<b>Probability</b>: %{y:.4f}\n" +
-        "<b>p-value</b>: %{customdata:.4f}\n" +
-        "<b>α/2</b>: " + f"{alpha/2:.4f}" + "\n" +
+        "<b>Number of Heads</b>: %{x}<br>" +
+        "<b>Probability</b>: %{y:.4f}<br>" +
+        "<b>p-value</b>: %{customdata[0]:.4f}<br>" +
+        "<b>α/2</b>: " + f"{alpha/2:.4f}<br>" +
         "<b>Decision Rule</b>: " + 
-        f"Reject H₀ if p-value < {alpha/2:.4f}\n" +
+        f"Reject H₀ if p-value < {alpha/2:.4f}<br>" +
         "<extra></extra>"
     )
 ))
