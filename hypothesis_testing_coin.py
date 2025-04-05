@@ -37,21 +37,14 @@ fig.add_trace(go.Bar(
     name='Probability',
     marker_color=['red' if (k <= critical_low or k >= critical_high) else 'blue' for k in x],
     hovertemplate=(
-        "<b>Number of Heads</b>: %{x}
-" +
-        "<b>Probability</b>: %{y:.4f}
-" +
-        "<b>p-value</b>: %{customdata:.4f}
-" +
-        "<b>α/2</b>: " + f"{alpha/2:.4f}" + "
-" +
+        "<b>Number of Heads</b>: %{x}\n" +
+        "<b>Probability</b>: %{y:.4f}\n" +
+        "<b>p-value</b>: %{customdata:.4f}\n" +
+        "<b>α/2</b>: " + f"{alpha/2:.4f}" + "\n" +
         "<b>Decision Rule</b>: " + 
-        f"Reject H₀ if p-value < {alpha/2:.4f}
-" +
+        f"Reject H₀ if p-value < {alpha/2:.4f}\n" +
         "<extra></extra>"
-    ),
-    customdata=p_values
-))
+    )
 
 # Add regions
 fig.add_shape(
