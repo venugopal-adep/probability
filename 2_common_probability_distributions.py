@@ -1,206 +1,161 @@
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
-from scipy import stats
+from scipy.stats import binom
 
-# Set page config
-st.set_page_config(layout="wide", page_title="Common Probability Distributions Explorer", page_icon="📊")
+def calculate_p_value(heads):
+    return 2 * min(binom.cdf(heads, 10, 0.5), 1 - binom.cdf(heads-1, 10, 0.5))
 
-# Custom CSS
-st.markdown("""
-<style>
-    body {font-family: Arial, sans-serif;}
-    .main {padding: 1rem;}
-    .stApp {background-color: #f0f4f8;}
-    .st-emotion-cache-10trblm {text-align: center;}
-    .info-box {background-color: #e1e5eb; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-    .example-box {background-color: #d4edda; padding: 15px; border-radius: 10px; margin-top: 10px; border-left: 5px solid #28a745;}
-    .quiz-container {background-color: #d0e1f9; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-    .stTabs {background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-    .plot-container {display: flex; justify-content: space-between; align-items: flex-start;}
-    .sliders {width: 30%; padding-right: 20px;}
-    .plot {width: 70%;}
-    .stButton>button {background-color: #4e8cff; color: white; border-radius: 5px; border: none; padding: 10px 20px; font-size: 16px;}
-    .stButton>button:hover {background-color: #3a7be0;}
-    h1, h2, h3 {color: #2c3e50;}
-    .stSlider {margin-bottom: 20px;}
-    .formula-container {background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; border-left: 3px solid #17a2b8;}
-</style>
-""", unsafe_allow_html=True)
+# Interface setup
+st.set_page_config(layout="wide")
+st.title("🎲 Coin Fairness Analyzer")
 
-# Title and introduction
-st.title("📊 Common Probability Distributions Explorer")
-st.write("**Developed by: Venugopal Adep**")
-st.markdown("Explore common probability distributions and their real-world applications.")
+with st.sidebar:
+    st.header("Settings")
+    alpha = st.selectbox("Significance Level (α):", 
+                        [0.10, 0.05, 0.01],
+                        help="Probability threshold for rejecting null hypothesis")
 
-# Create tabs for each distribution
-tab1, tab2, tab3, tab4 = st.tabs(["Bernoulli", "Binomial", "Uniform", "Normal"])
+# Calculate critical values
+x = np.arange(0, 11)
+pmf = binom.pmf(x, 10, 0.5)
 
-with tab1:
-    st.header("Bernoulli Distribution")
-    st.markdown("""
-    The Bernoulli distribution models a single trial with two possible outcomes: success or failure.
-    
-    **Example: The outcome of tossing a fair coin**
-    """)
-    
-    col1, col2 = st.columns([3, 7])
-    
-    with col1:
-        p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.5, 0.01, key="bernoulli_p")
-        
-        st.markdown("**Formula:**")
-        with st.container():
-            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
-            st.latex(r"P(X=k) = p^k \cdot (1-p)^{(1-k)}, \text{ where } k \in \{0, 1\}")
-            st.markdown('</div>', unsafe_allow_html=True)
-    
-    with col2:
-        x = [0, 1]
-        y = [1-p, p]
-        
-        fig = go.Figure(data=[go.Bar(x=x, y=y, text=[f'{y[0]:.2f}', f'{y[1]:.2f}'], textposition='auto')])
-        fig.update_layout(title="Bernoulli Distribution", xaxis_title="Outcome (0: Failure, 1: Success)", yaxis_title="Probability")
-        st.plotly_chart(fig, use_container_width=True)
-    
-    st.markdown("""
-    <div class="example-box">
-    In this coin toss example:
-    - 0 represents "Tails" (failure)
-    - 1 represents "Heads" (success)
-    - The probability of getting heads (p) is typically 0.5 for a fair coin
-    
-    Adjust the slider to see how changing the probability affects the distribution!
-    </div>
-    """, unsafe_allow_html=True)
+# Find critical values
+critical_low = binom.ppf(alpha/2, 10, 0.5)
+critical_high = binom.ppf(1-alpha/2, 10, 0.5)
 
-with tab2:
-    st.header("Binomial Distribution")
-    st.markdown("""
-    The Binomial distribution models the number of successes in a fixed number of independent Bernoulli trials.
-    
-    **Example: The number of non-defective products in a production run**
-    """)
-    
-    col1, col2 = st.columns([3, 7])
-    
-    with col1:
-        n = st.slider("Number of Trials (n)", 1, 100, 20, 1, key="binomial_n")
-        p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.8, 0.01, key="binomial_p")
-        
-        st.markdown("**Formula:**")
-        with st.container():
-            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
-            st.latex(r"P(X=k) = \binom{n}{k} p^k (1-p)^{(n-k)}, \text{ where } k = 0, 1, \ldots, n")
-            st.markdown('</div>', unsafe_allow_html=True)
-    
-    with col2:
-        x = np.arange(0, n+1)
-        y = stats.binom.pmf(x, n, p)
-        
-        fig = go.Figure(data=[go.Bar(x=x, y=y)])
-        fig.update_layout(title=f"Binomial Distribution (n={n}, p={p})", 
-                          xaxis_title="Number of Successes", yaxis_title="Probability")
-        st.plotly_chart(fig, use_container_width=True)
-    
-    st.markdown("""
-    <div class="example-box">
-    In this production run example:
-    - n represents the total number of products manufactured
-    - p represents the probability of a product being non-defective
-    - The graph shows the probability of getting different numbers of non-defective products
-    
-    Try adjusting n and p to see how they affect the shape of the distribution!
-    </div>
-    """, unsafe_allow_html=True)
+# Calculate p-values for each possible outcome
+p_values = [calculate_p_value(h) for h in x]
 
-with tab3:
-    st.header("Uniform Distribution")
-    st.markdown("""
-    The Uniform distribution models a situation where all outcomes in a range are equally likely.
-    
-    **Example: The number of books sold weekly at a bookstore**
-    """)
-    
-    col1, col2 = st.columns([3, 7])
-    
-    with col1:
-        a = st.slider("Minimum Value (a)", 0, 50, 10, 1, key="uniform_a")
-        b = st.slider("Maximum Value (b)", a+1, 100, 50, 1, key="uniform_b")
-        
-        st.markdown("**Formula:**")
-        with st.container():
-            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
-            st.latex(r"f(x) = \frac{1}{b-a}, \text{ for } a \leq x \leq b")
-            st.markdown('</div>', unsafe_allow_html=True)
-    
-    with col2:
-        x = np.linspace(a-5, b+5, 1000)
-        y = np.where((x >= a) & (x <= b), 1/(b-a), 0)
-        
-        fig = go.Figure(data=[go.Scatter(x=x, y=y, mode='lines', fill='tozeroy')])
-        fig.update_layout(title=f"Uniform Distribution [a={a}, b={b}]", 
-                          xaxis_title="Number of Books Sold", yaxis_title="Probability Density")
-        st.plotly_chart(fig, use_container_width=True)
-    
-    st.markdown("""
-    <div class="example-box">
-    In this bookstore example:
-    - a represents the minimum number of books sold in a week
-    - b represents the maximum number of books sold in a week
-    - All values between a and b are equally likely
-    
-    Adjust a and b to see how the range affects the distribution!
-    </div>
-    """, unsafe_allow_html=True)
+# Create figure
+fig = go.Figure()
 
-with tab4:
-    st.header("Normal Distribution")
-    st.markdown("""
-    The Normal (or Gaussian) distribution is a continuous probability distribution that is symmetric about the mean.
-    
-    **Example: IQ distribution of all seven-year-old children in New York**
-    """)
-    
-    col1, col2 = st.columns([3, 7])
-    
-    with col1:
-        mu = st.slider("Mean (μ)", 70, 130, 100, 1, key="normal_mu")
-        sigma = st.slider("Standard Deviation (σ)", 1, 30, 15, 1, key="normal_sigma")
-        
-        st.markdown("**Formula:**")
-        with st.container():
-            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
-            st.latex(r"f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}")
-            st.markdown('</div>', unsafe_allow_html=True)
-    
-    with col2:
-        x = np.linspace(40, 160, 1000)  # Fixed x-axis range
-        y = stats.norm.pdf(x, mu, sigma)
-        
-        fig = go.Figure(data=[go.Scatter(x=x, y=y, mode='lines', fill='tozeroy')])
-        fig.update_layout(title=f"Normal Distribution (μ={mu}, σ={sigma})", 
-                          xaxis_title="IQ Score", yaxis_title="Probability Density",
-                          xaxis_range=[40, 160],  # Fixed x-axis range
-                          yaxis_range=[0, 0.03])  # Fixed y-axis range
-        st.plotly_chart(fig, use_container_width=True)
-    
-    st.markdown("""
-    <div class="example-box">
-    In this IQ distribution example:
-    - μ (mu) represents the average IQ score
-    - σ (sigma) represents the standard deviation of IQ scores
-    - The bell-shaped curve shows the relative likelihood of different IQ scores
-    
-    Try adjusting μ and σ to see how they affect the shape and position of the distribution!
-    </div>
-    """, unsafe_allow_html=True)
+# Add main probability bars with hover text
+fig.add_trace(go.Bar(
+    x=x,
+    y=pmf,
+    name='Probability',
+    marker_color=['red' if (k <= critical_low or k >= critical_high) else 'blue' for k in x],
+    customdata=p_values,  # Add the p-values as custom data
+    hovertemplate=(
+        "<b>Number of Heads</b>: %{x}\n" +
+        "<b>Probability</b>: %{y:.4f}\n" +
+        "<b>p-value</b>: %{customdata:.4f}\n" +
+        "<b>α/2</b>: " + f"{alpha/2:.4f}" + "\n" +
+        "<b>Decision Rule</b>: " + 
+        f"Reject H₀ if p-value < {alpha/2:.4f}\n" +
+        "<extra></extra>"
+    )
+))
 
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style="text-align: center; color: #777;">
-© 2024 Common Probability Distributions Explorer | Developed by Venugopal Adep<br>
-This interactive tool is for educational purposes only and does not represent any specific research study.
-</div>
-""", unsafe_allow_html=True)
+# Add regions
+fig.add_shape(
+    type="rect",
+    x0=-0.5,
+    x1=critical_low,
+    y0=0,
+    y1=max(pmf)*1.1,
+    fillcolor="rgba(255,0,0,0.1)",
+    line_width=0,
+    layer="below"
+)
+
+fig.add_shape(
+    type="rect",
+    x0=critical_high,
+    x1=10.5,
+    y0=0,
+    y1=max(pmf)*1.1,
+    fillcolor="rgba(255,0,0,0.1)",
+    line_width=0,
+    layer="below"
+)
+
+# Update layout
+fig.update_layout(
+    title=f"Binomial Distribution (n=10, p=0.5) with α={alpha}",
+    xaxis_title="Number of Heads",
+    yaxis_title="Probability",
+    annotations=[
+        dict(
+            x=5,
+            y=max(pmf)*1.15,
+            text="Acceptance Region",
+            showarrow=False,
+            font=dict(size=14, color="blue")
+        ),
+        dict(
+            x=1,
+            y=max(pmf)*1.15,
+            text="Rejection Region",
+            showarrow=False,
+            font=dict(size=14, color="red")
+        ),
+        dict(
+            x=9,
+            y=max(pmf)*1.15,
+            text="Rejection Region",
+            showarrow=False,
+            font=dict(size=14, color="red")
+        )
+    ]
+)
+
+# Display results
+col1, col2 = st.columns([1, 2])
+with col1:
+    st.subheader("Test Results")
+    st.write(f"**Significance Level (α):** {alpha}")
+    st.write(f"**Critical Values:**")
+    st.write(f"- Lower: ≤ {int(critical_low)} heads")
+    st.write(f"- Upper: ≥ {int(critical_high)} heads")
+    
+    st.write("**Decision Rule:**")
+    st.write("- Accept H₀ (fair coin) if heads are between "
+             f"{int(critical_low+1)} and {int(critical_high-1)}")
+    st.write("- Reject H₀ (biased coin) if heads ≤ "
+             f"{int(critical_low)} or ≥ {int(critical_high)}")
+
+with col2:
+    st.plotly_chart(fig, use_container_width=True)
+
+st.caption("""
+**Interpretation:**  
+- **Blue bars**: Acceptance region - Results consistent with a fair coin
+- **Red bars**: Rejection regions - Results suggest the coin is biased
+- **Shaded areas**: Visual representation of rejection regions
+- **H₀**: Null hypothesis (coin is fair, p = 0.5)
+- **H₁**: Alternative hypothesis (coin is biased, p ≠ 0.5)
+""")
+
+# After the plot, add explanations
+st.write("---")
+st.subheader("Statistical Concepts")
+
+st.write("""
+**P-value Explanation:**
+- In this coin toss context, the p-value is the probability of observing results as extreme as or more extreme than the current number of heads, assuming the coin is fair (H₀ is true).
+- If p-value < α, we reject the null hypothesis (conclude the coin is biased)
+- If p-value ≥ α, we fail to reject the null hypothesis (insufficient evidence to conclude the coin is biased)
+
+**Significance Level (α) Explanation:**
+- α represents the probability of rejecting H₀ when it is actually true (Type I error)
+- In this test:
+  - α = {alpha} means we accept a {alpha*100}% chance of incorrectly concluding the coin is biased when it's actually fair
+  - Lower α values (e.g., 0.01) are more conservative and require stronger evidence to conclude bias
+  - Higher α values (e.g., 0.10) are more lenient in concluding bias
+""")
+
+# Update the Statistical Concepts section
+st.write("""
+**Two-Sided Test Explanation:**
+- Since this is a two-sided test, we compare the p-value with α/2 (not α)
+- If p-value < α/2, we reject the null hypothesis (conclude the coin is biased)
+- If p-value ≥ α/2, we fail to reject the null hypothesis (insufficient evidence to conclude the coin is biased)
+- Current α/2 = {:.4f}
+
+**Why α/2?**
+- We're testing for bias in both directions (too many or too few heads)
+- The significance level α is split between both tails of the distribution
+- Each tail gets α/2 of the total significance level
+""".format(alpha/2))
