@@ -31,6 +31,7 @@ p_values = [calculate_p_value(h) for h in x]
 fig = go.Figure()
 
 # Add main probability bars with hover text
+# Add main probability bars with hover text
 fig.add_trace(go.Bar(
     x=x,
     y=pmf,
@@ -45,6 +46,8 @@ fig.add_trace(go.Bar(
         f"Reject H₀ if p-value < {alpha/2:.4f}\n" +
         "<extra></extra>"
     )
+))  # Close the parenthesis here
+
 
 # Add regions
 fig.add_shape(
