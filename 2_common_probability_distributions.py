@@ -24,7 +24,7 @@ st.markdown("""
     .stButton>button:hover {background-color: #3a7be0;}
     h1, h2, h3 {color: #2c3e50;}
     .stSlider {margin-bottom: 20px;}
-    .formula-box {background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; border-left: 3px solid #17a2b8; font-family: "Consolas", monospace; font-size: 0.9em; line-height: 1.2;}
+    .formula-container {background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 10px; border-left: 3px solid #17a2b8;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -49,13 +49,11 @@ with tab1:
     with col1:
         p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.5, 0.01, key="bernoulli_p")
         
-        st.markdown("""
-        <div class="formula-box">
-        <strong>Formula:</strong><br>
-        P(X=k) = p^k * (1-p)^(1-k)<br>
-        where k ∈ {0, 1}
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("**Formula:**")
+        with st.container():
+            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
+            st.latex(r"P(X=k) = p^k \cdot (1-p)^{(1-k)}, \text{ where } k \in \{0, 1\}")
+            st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
         x = [0, 1]
@@ -90,13 +88,11 @@ with tab2:
         n = st.slider("Number of Trials (n)", 1, 100, 20, 1, key="binomial_n")
         p = st.slider("Probability of Success (p)", 0.0, 1.0, 0.8, 0.01, key="binomial_p")
         
-        st.markdown("""
-        <div class="formula-box">
-        <strong>Formula:</strong><br>
-        P(X=k) = C(n,k) * p^k * (1-p)^(n-k)<br>
-        where k = 0, 1, ..., n
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("**Formula:**")
+        with st.container():
+            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
+            st.latex(r"P(X=k) = \binom{n}{k} p^k (1-p)^{(n-k)}, \text{ where } k = 0, 1, \ldots, n")
+            st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
         x = np.arange(0, n+1)
@@ -132,13 +128,11 @@ with tab3:
         a = st.slider("Minimum Value (a)", 0, 50, 10, 1, key="uniform_a")
         b = st.slider("Maximum Value (b)", a+1, 100, 50, 1, key="uniform_b")
         
-        st.markdown("""
-        <div class="formula-box">
-        <strong>Formula:</strong><br>
-        f(x) = 1 / (b - a)<br>
-        for a ≤ x ≤ b
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("**Formula:**")
+        with st.container():
+            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
+            st.latex(r"f(x) = \frac{1}{b-a}, \text{ for } a \leq x \leq b")
+            st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
         x = np.linspace(a-5, b+5, 1000)
@@ -174,12 +168,11 @@ with tab4:
         mu = st.slider("Mean (μ)", 70, 130, 100, 1, key="normal_mu")
         sigma = st.slider("Standard Deviation (σ)", 1, 30, 15, 1, key="normal_sigma")
         
-        st.markdown("""
-        <div class="formula-box">
-        <strong>Formula:</strong><br>
-        f(x) = (1/(σ√(2π))) * e^(-(x-μ)²/(2σ²))
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("**Formula:**")
+        with st.container():
+            st.markdown('<div class="formula-container">', unsafe_allow_html=True)
+            st.latex(r"f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}")
+            st.markdown('</div>', unsafe_allow_html=True)
     
     with col2:
         x = np.linspace(40, 160, 1000)  # Fixed x-axis range
