@@ -14,7 +14,7 @@ st.title("Understanding P-Values")
 with st.sidebar:
     st.header("Experiment Settings")
     total_heads = st.slider("Number of heads", 0, 1000, 500)  # Add this line
-    total_flips = st.slider("Number of flips", 10, 100000, 1000)
+    total_flips = st.slider("Number of flips", 10, 2000, 1000)
     
     # Validate heads cannot exceed flips
     if total_heads > total_flips:
